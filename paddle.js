@@ -1,7 +1,7 @@
 export class Paddle {
   constructor(ctx, initialX, initialY) {
     this.ctx = ctx;
-    this.color = "black";
+    this.color = "navy";
     this.x = initialX;
     this.y = initialY;
     this.width = 100;
@@ -12,14 +12,14 @@ export class Paddle {
     this.x = e.clientX;
   }
   draw() {
-    this.ctx.beginPath();
-    this.ctx.lineWidth = "2";
-    this.fillStyle = "";
-    this.ctx.strokeStyle = this.color;
-    this.ctx.rect(this.x, this.y, this.width, this.height);
-    this.ctx.stroke();
+    // this.ctx.beginPath();
+    // this.ctx.lineWidth = "2";
+    // this.fillStyle = "";
+    // this.ctx.strokeStyle = this.color;
+    // this.ctx.rect(this.x, this.y, this.width, this.height);
+    // this.ctx.stroke();
 
-    // this.ctx.fillStyle = this.color;
-    // this.ctx.fillRect(this.x, this.y, 100, 15);
+    this.ctx.fillStyle = this.color;
+    this.ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 }

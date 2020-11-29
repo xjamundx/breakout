@@ -10,7 +10,15 @@ export class Ball {
     this.xDirection = 1; // heading right
     this.velocityX = 0.5;
     this.velocityY = 3;
+    this.paused = false;
     this.move();
+  }
+  pause() {
+    this.paused = !this.paused;
+    clearTimeout(this.timer);
+    if (!this.paused) {
+      this.move();
+    }
   }
   switchX() {
     this.xDirection = this.xDirection * -1; // flip it
@@ -21,7 +29,7 @@ export class Ball {
   move() {
     this.x += this.velocityX * this.xDirection;
     this.y += this.velocityY * this.yDirection;
-    setTimeout(() => this.move(), 20);
+    this.timer = setTimeout(() => this.move(), 20);
   }
   draw() {
     this.ctx.beginPath();

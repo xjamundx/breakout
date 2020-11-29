@@ -33,6 +33,14 @@ class Game {
     this.paddle = new Paddle(ctx, this.width / 2 - 75, this.height - 20);
     this.ball = new Ball(ctx);
     this.ctx = ctx;
+    this.done = false;
+  }
+  pause() {
+    this.paused = !this.paused;
+    this.ball.pause();
+    if (!this.paused) {
+      this.draw();
+    }
   }
   draw() {
     // clear everything
@@ -53,27 +61,28 @@ class Game {
     }
   }
   detectCrash() {
-    if (this.ball.y <= 0) {
+    if (this.ball.y <= this.ball.height / 2) {
       this.ball.switchY();
-      this.ball.y = 1; // get it safely out of the way
+      this.ball.y = this.ball.height; // get it safely out of the way
     }
 
     if (this.ball.x <= 0 || this.ball.x + this.ball.width >= this.width) {
       this.ball.switchX();
     }
 
-    // if (this.ball.y + this.ball.height >= this.paddle.y)
-    if (this.ball.y >= this.paddle.y) {
+    if (this.ball.y + this.ball.height >= this.paddle.y) {
       if (
-        this.ball.x + this.ball.width < this.paddle.x ||
-        this.ball.x > this.paddle.x + this.paddle.width
+        this.ball.x + this.ball.width >= this.paddle.x &&
+        this.ball.x < this.paddle.x + this.paddle.width
       ) {
-        this.paused = true;
-        return;
-      } else {
         // supposedly we've hit the paddle
         this.ball.y -= 5; // move it safely back up
         this.ball.switchY();
+      } else if (this.ball.y >= this.paddle.y) {
+        // you've hit the ground
+        this.done = true;
+        this.paused = true;
+        return;
       }
     }
   }
@@ -82,3 +91,6 @@ class Game {
 const canvas = document.getElementById("game");
 const game = new Game(canvas.getContext("2d"));
 game.draw();
+canvas.addEventListener("click", () => {
+  if (!game.done) game.pause();
+});

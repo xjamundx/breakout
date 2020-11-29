@@ -8,8 +8,8 @@ export class Ball {
     this.height = this.width;
     this.yDirection = 1; // heading down
     this.xDirection = 1; // heading right
-    this.velocityX = 0.5;
-    this.velocityY = 3;
+    this.velocityX = 1.5;
+    this.velocityY = 6;
     this.paused = false;
     this.move();
   }

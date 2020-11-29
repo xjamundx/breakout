@@ -5,12 +5,22 @@ export class Ball {
     this.y = 75;
     this.width = 15;
     this.color = "black";
+    this.height = this.width;
+    this.yDirection = 1; // heading down
+    this.xDirection = 1; // heading right
+    this.velocityX = 0.5;
+    this.velocityY = 3;
     this.move();
   }
+  switchX() {
+    this.xDirection = this.xDirection * -1; // flip it
+  }
+  switchY() {
+    this.yDirection = this.yDirection * -1; // flip it
+  }
   move() {
-    this.x += 0.5;
-    this.y += 2;
-    this.draw();
+    this.x += this.velocityX * this.xDirection;
+    this.y += this.velocityY * this.yDirection;
     setTimeout(() => this.move(), 20);
   }
   draw() {

@@ -1,5 +1,5 @@
 import { Ball } from "./ball.js";
-import { Brick } from "./brick.js";
+import { Bricks } from "./bricks.js";
 import { Paddle } from "./paddle.js";
 
 const bricks = [
@@ -7,25 +7,21 @@ const bricks = [
   [10, 125],
   [10, 150],
 
-  [120, 100],
-  [120, 125],
-  [120, 150],
+  [125, 100],
+  [125, 125],
+  [125, 150],
 
-  [230, 100],
-  [230, 125],
-  [230, 150],
+  [240, 100],
+  [240, 125],
+  [240, 150],
 
-  [340, 100],
-  [340, 125],
-  [340, 150],
+  [355, 100],
+  [355, 125],
+  [355, 150],
 
-  [450, 100],
-  [450, 125],
-  [450, 150],
-
-  [560, 100],
-  [560, 125],
-  [560, 150],
+  [470, 100],
+  [470, 125],
+  [470, 150],
 ];
 
 class Game {
@@ -33,23 +29,53 @@ class Game {
     this.paused = false;
     this.width = canvas.width;
     this.height = canvas.height;
-    this.brick = new Brick(ctx);
+    this.brick = new Bricks(ctx, this.width / 5 - 10, 20);
     this.paddle = new Paddle(ctx, this.width / 2 - 75, this.height - 20);
     this.ball = new Ball(ctx);
     this.ctx = ctx;
   }
   draw() {
-    if (this.paused) return;
-
+    // clear everything
     this.ctx.clearRect(0, 0, this.width, this.height);
+
+    // draw everything
     for (let [x, y] of bricks) {
       this.brick.draw(x, y);
     }
     this.paddle.draw();
     this.ball.draw();
 
-    console.log("drawing");
-    requestAnimationFrame(() => this.draw());
+    // search for crashes
+    this.detectCrash();
+
+    if (!this.paused) {
+      requestAnimationFrame(() => this.draw());
+    }
+  }
+  detectCrash() {
+    if (this.ball.y <= 0) {
+      this.ball.switchY();
+      this.ball.y = 1; // get it safely out of the way
+    }
+
+    if (this.ball.x <= 0 || this.ball.x + this.ball.width >= this.width) {
+      this.ball.switchX();
+    }
+
+    // if (this.ball.y + this.ball.height >= this.paddle.y)
+    if (this.ball.y >= this.paddle.y) {
+      if (
+        this.ball.x + this.ball.width < this.paddle.x ||
+        this.ball.x > this.paddle.x + this.paddle.width
+      ) {
+        this.paused = true;
+        return;
+      } else {
+        // supposedly we've hit the paddle
+        this.ball.y -= 5; // move it safely back up
+        this.ball.switchY();
+      }
+    }
   }
 }
 

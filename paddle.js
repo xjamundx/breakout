@@ -4,6 +4,8 @@ export class Paddle {
     this.color = "black";
     this.x = initialX;
     this.y = initialY;
+    this.width = 100;
+    this.height = 15;
     window.addEventListener("mousemove", (e) => this.move(e));
   }
   move(e) {
@@ -13,8 +15,8 @@ export class Paddle {
     this.ctx.beginPath();
     this.ctx.lineWidth = "2";
     this.fillStyle = "";
-    this.ctx.strokeStyle = "blue";
-    this.ctx.rect(this.x, this.y, 100, 15);
+    this.ctx.strokeStyle = this.color;
+    this.ctx.rect(this.x, this.y, this.width, this.height);
     this.ctx.stroke();
 
     // this.ctx.fillStyle = this.color;

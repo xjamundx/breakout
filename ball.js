@@ -1,14 +1,14 @@
 export class Ball {
   constructor(ctx) {
     this.ctx = ctx;
-    this.x = 100;
-    this.y = 75;
+    this.x = 250;
+    this.y = 250;
     this.width = 15;
     this.color = "black";
     this.height = this.width;
     this.yDirection = 1; // heading down
     this.xDirection = 1; // heading right
-    this.velocityX = 1.5;
+    this.velocityX = 3;
     this.velocityY = 6;
     this.paused = false;
     this.move();

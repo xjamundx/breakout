@@ -2,34 +2,12 @@ import { Ball } from "./ball.js";
 import { Bricks } from "./bricks.js";
 import { Paddle } from "./paddle.js";
 
-const bricks = [
-  [10, 100],
-  [10, 125],
-  [10, 150],
-
-  [125, 100],
-  [125, 125],
-  [125, 150],
-
-  [240, 100],
-  [240, 125],
-  [240, 150],
-
-  [355, 100],
-  [355, 125],
-  [355, 150],
-
-  [470, 100],
-  [470, 125],
-  [470, 150],
-];
-
 class Game {
   constructor(ctx) {
     this.paused = false;
     this.width = canvas.width;
     this.height = canvas.height;
-    this.brick = new Bricks(ctx, this.width / 5 - 10, 20);
+    this.bricks = new Bricks(ctx, this.width / 5 - 10, 20);
     this.paddle = new Paddle(ctx, this.width / 2 - 75, this.height - 20);
     this.ball = new Ball(ctx);
     this.ctx = ctx;
@@ -47,11 +25,16 @@ class Game {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
     // draw everything
-    for (let [x, y] of bricks) {
-      this.brick.draw(x, y);
-    }
+    this.bricks.draw();
     this.paddle.draw();
     this.ball.draw();
+
+    // you won, 🎉
+    if (this.bricks.bricksLeft === 0) {
+      this.done = true;
+      this.paused = true;
+      return;
+    }
 
     // search for crashes
     this.detectCrash();
@@ -66,7 +49,10 @@ class Game {
       this.ball.y = this.ball.height; // get it safely out of the way
     }
 
-    if (this.ball.x <= 0 || this.ball.x + this.ball.width >= this.width) {
+    if (
+      this.ball.x - this.ball.width <= 0 ||
+      this.ball.x + this.ball.width >= this.width
+    ) {
       this.ball.switchX();
     }
 
@@ -84,6 +70,10 @@ class Game {
         this.paused = true;
         return;
       }
+    }
+
+    if (this.bricks.detectHit(this.ball.x, this.ball.y)) {
+      this.ball.switchY();
     }
   }
 }

@@ -7,6 +7,7 @@ class Game {
     this.paused = false;
     this.width = canvas.width;
     this.height = canvas.height;
+    this.paddle = new Paddle(ctx, this.width / 2, this.height - 100);
     this.bricks = new Bricks(ctx, this.width / 5 - 10, 20);
     this.paddle = new Paddle(ctx, this.width / 2 - 75, this.height - 20);
     this.ball = new Ball(ctx);
@@ -44,21 +45,21 @@ class Game {
     }
   }
   detectCrash() {
-    if (this.ball.y <= this.ball.height / 2) {
+    if (this.ball.y <= this.ball.radius) {
       this.ball.switchY();
-      this.ball.y = this.ball.height; // get it safely out of the way
+      this.ball.y = this.ball.radius; // get it safely out of the way
     }
 
     if (
-      this.ball.x - this.ball.width <= 0 ||
-      this.ball.x + this.ball.width >= this.width
+      this.ball.x - this.ball.radius <= 0 ||
+      this.ball.x + this.ball.radius >= this.width
     ) {
       this.ball.switchX();
     }
 
-    if (this.ball.y + this.ball.height >= this.paddle.y) {
+    if (this.ball.y + this.ball.radius >= this.paddle.y) {
       if (
-        this.ball.x + this.ball.width >= this.paddle.x &&
+        this.ball.x + this.ball.radius >= this.paddle.x &&
         this.ball.x < this.paddle.x + this.paddle.width
       ) {
         // supposedly we've hit the paddle
@@ -79,6 +80,8 @@ class Game {
 }
 
 const canvas = document.getElementById("game");
+// canvas.width = Math.min(window.innerWidth - 10, 600);
+// canvas.height = (canvas.width * 2) / 3;
 const game = new Game(canvas.getContext("2d"));
 game.draw();
 canvas.addEventListener("click", () => {

@@ -3,14 +3,14 @@ export class Ball {
     this.ctx = ctx;
     this.x = 250;
     this.y = 250;
-    this.width = 15;
+    this.radius = 5;
     this.color = "black";
-    this.height = this.width;
     this.yDirection = 1; // heading down
     this.xDirection = 1; // heading right
     this.velocityX = 3;
     this.velocityY = 6;
     this.paused = false;
+    this.updateFrequency = 20;
     this.move();
   }
   pause() {
@@ -29,12 +29,12 @@ export class Ball {
   move() {
     this.x += this.velocityX * this.xDirection;
     this.y += this.velocityY * this.yDirection;
-    this.timer = setTimeout(() => this.move(), 20);
+    this.timer = setTimeout(() => this.move(), this.updateFrequency);
   }
   draw() {
     this.ctx.beginPath();
     this.ctx.fillStyle = this.color;
-    this.ctx.arc(this.x, this.y, this.width, 0, 2 * Math.PI);
+    this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     this.ctx.fill();
   }
 }

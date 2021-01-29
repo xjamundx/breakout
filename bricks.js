@@ -11,9 +11,6 @@ const bricks = [
   [260, 125],
   [260, 150],
 
-  [385, 100],
-  [385, 125],
-  [385, 150],
 
   [510, 100],
   [510, 125],
@@ -41,10 +38,7 @@ export class Bricks {
     for (let i = 0; i < bricks.length; i++) {
       if (!bricks[i]) continue;
       let [brickX, brickY] = bricks[i];
-      if (x < brickX) continue;
-      if (x > brickX + this.brickWidth) continue;
-      if (y < brickY) continue;
-      if (y > brickY + this.brickHeight) continue;
+
       delete bricks[i];
       this.bricksLeft--;
       return true;

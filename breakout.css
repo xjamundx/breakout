@@ -8,10 +8,6 @@ body {
   background: white;
 }
 .game-canvas {
-  box-sizing: border-box;
-  background: #ccc;
-  border: 5px solid black;
-
   -moz-user-select: all;
   -webkit-user-select: all;
   -ms-user-select: all;
